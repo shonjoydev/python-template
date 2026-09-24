@@ -1,0 +1,92 @@
+name: "Initialize template"
+
+# Runs once, the first time a repo created from this template is pushed to.
+# It renames every "my-project" / "my_project" placeholder to match the new
+# repo's name, regenerates uv.lock to match, commits, and deletes itself so
+# it never runs again.
+
+on:
+  push:
+    branches: ["**"]
+
+permissions:
+  contents: write
+
+jobs:
+  init:
+    # Skip on the template repo itself (its name is still the placeholder),
+    # and skip the commit this workflow makes (avoids an infinite loop).
+    if: >
+      github.event.repository.name != 'my-project' &&
+      !contains(github.event.head_commit.message, '[init-template]')
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compute names from the repo name
+        id: names
+        run: |
+          REPO_NAME="${GITHUB_REPOSITORY#*/}"
+          # A valid Python package name: lowercase, underscores, no leading digit.
+          PKG_NAME=$(echo "$REPO_NAME" \
+            | tr '[:upper:]' '[:lower:]' \
+            | tr '-' '_' | tr '.' '_' \
+            | sed -E 's/[^a-z0-9_]/_/g' \
+            | sed -E 's/^([0-9])/_\1/')
+          echo "repo_name=$REPO_NAME" >> "$GITHUB_OUTPUT"
+          echo "pkg_name=$PKG_NAME" >> "$GITHUB_OUTPUT"
+          echo "Renaming my-project -> $REPO_NAME"
+          echo "Renaming my_project -> $PKG_NAME"
+
+      - name: Skip if this repo was already initialized
+        id: check
+        run: |
+          if grep -q 'name = "my-project"' pyproject.toml; then
+            echo "already_done=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "already_done=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Rename placeholders across the repo
+        if: steps.check.outputs.already_done == 'false'
+        run: |
+          REPO_NAME="${{ steps.names.outputs.repo_name }}"
+          PKG_NAME="${{ steps.names.outputs.pkg_name }}"
+
+          # Text substitution in every tracked text file (skip the lockfile;
+          # that gets regenerated below instead of hand-edited).
+          git ls-files -z \
+              -- '*.py' '*.toml' '*.md' '*.yml' '*.yaml' '*.cfg' '*.ini' \
+            | xargs -0 sed -i \
+                -e "s/python-uv-project/${REPO_NAME}/g" \
+                -e "s/my-project/${REPO_NAME}/g" \
+                -e "s/my_project/${PKG_NAME}/g"
+
+          # Rename the package directory itself.
+          if [ -d "src/my_project" ] && [ "my_project" != "$PKG_NAME" ]; then
+            git mv src/my_project "src/${PKG_NAME}"
+          fi
+
+      - name: Install uv
+        if: steps.check.outputs.already_done == 'false'
+        uses: astral-sh/setup-uv@v3
+
+      - name: Regenerate the lockfile for the renamed package
+        if: steps.check.outputs.already_done == 'false'
+        run: uv lock
+
+      - name: Remove this workflow so it only ever runs once
+        if: steps.check.outputs.already_done == 'false'
+        run: rm -f .github/workflows/init-template.yml
+
+      - name: Commit and push
+        if: steps.check.outputs.already_done == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "[init-template] rename project to ${{ steps.names.outputs.repo_name }}"
+          git push
