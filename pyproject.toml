@@ -1,5 +1,5 @@
 [project]
-name = "my-project"
+name = "python-template"
 version = "0.1.0"
 description = "A modern Python project, managed with uv"
 authors = [
@@ -30,10 +30,10 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/my_project"]
+packages = ["src/python_template"]
 
 [tool.pytest.ini_options]
-pythonpath = ["src"]  # lets tests import `my_project` without installing it
+pythonpath = ["src"]  # lets tests import `python_template` without installing it
 testpaths = ["tests"]
 python_files = "test_*.py"
 python_classes = "Test*"
@@ -41,17 +41,17 @@ python_functions = "test_*"
 addopts = [
     "-ra",
     "--strict-markers",
-    "--cov=src/my_project",
+    "--cov=src/python_template",
     "--cov-report=term-missing",
     "--cov-report=html",
 ]
 
 [tool.coverage.run]
 branch = true
-source = ["src/my_project"]
+source = ["src/python_template"]
 # main.py is a thin CLI entry point exercised by running the app, not by
 # tests — omit it so `fail_under = 100` reflects tested library code only.
-omit = ["tests/*", "src/my_project/main.py"]
+omit = ["tests/*", "src/python_template/main.py"]
 
 [tool.coverage.report]
 show_missing = true

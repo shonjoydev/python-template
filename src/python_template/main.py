@@ -1,6 +1,6 @@
-"""Command-line entry point for my_project."""
+"""Command-line entry point for python_template."""
 
-from my_project import greet
+from python_template import greet
 
 
 def main() -> None:

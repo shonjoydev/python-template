@@ -1,4 +1,4 @@
-# my-project
+# python-template
 
 A modern Python starter project managed with [uv](https://github.com/astral-sh/uv), set up for test-driven development with pytest, and linted/formatted/type-checked with ruff and mypy.
 
@@ -43,7 +43,7 @@ No action needed on their end beyond naming the repo — the rename happens by i
 
 ```bash
 git clone <your-repo-url>
-cd my-project
+cd python-template
 
 # Installs Python (if needed), creates .venv, installs all deps + dev tools
 uv sync --extra dev
@@ -62,13 +62,13 @@ make test      # uv run pytest
 ## Usage
 
 ```bash
-uv run python -m my_project.main
+uv run python -m python_template.main
 # or
 make run
 ```
 
 ```python
-from my_project import greet
+from python_template import greet
 
 print(greet("World"))  # Hello, World!
 ```
@@ -120,8 +120,8 @@ This updates `pyproject.toml` and the `uv.lock` lockfile together, so installs s
 ## Project structure
 
 ```text
-my-project/
-├── src/my_project/          # source code
+python-template/
+├── src/python_template/          # source code
 │   ├── __init__.py
 │   └── main.py
 ├── tests/                   # tests (files named test_*.py)
@@ -142,7 +142,7 @@ my-project/
 
 Rename the package once you move past the starter stage:
 
-1. `src/my_project` → `src/<your_package_name>`
+1. `src/python_template` → `src/<your_package_name>`
 2. Update the import in `tests/test_smoke.py`
 3. In `pyproject.toml`, update `name`, `[tool.hatch.build.targets.wheel] packages`, `[tool.pytest.ini_options] --cov=`, and `[tool.coverage.run] source`
 4. Update this README

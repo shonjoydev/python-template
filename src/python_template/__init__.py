@@ -1,4 +1,4 @@
-"""my_project: rename this package to your project's name."""
+"""python_template: rename this package to your project's name."""
 
 __version__ = "0.1.0"
 

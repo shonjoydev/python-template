@@ -76,14 +76,14 @@ Pick the next smallest behavior and go back to Red.
 
 ## Worked example: a `Stack`
 
-Assumes your package is `src/my_project/` (rename to yours).
+Assumes your package is `src/python_template/` (rename to yours).
 
 **Cycle 1: empty stack**
 
 🔴 `tests/test_stack.py`
 
 ```python
-from my_project.stack import Stack
+from python_template.stack import Stack
 
 
 def test_new_stack_is_empty():
@@ -92,7 +92,7 @@ def test_new_stack_is_empty():
 
 Fails with `ModuleNotFoundError`. That's the right reason: the module doesn't exist yet.
 
-🟢 `src/my_project/stack.py`
+🟢 `src/python_template/stack.py`
 
 ```python
 class Stack:

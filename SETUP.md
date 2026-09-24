@@ -36,10 +36,10 @@ You do **not** need Python pre-installed — uv installs the version pinned in `
 **Start in the project root**, the folder that contains `pyproject.toml`, `src/`, and `tests/`:
 
 ```bash
-cd python-uv-project
+cd python-template
 ```
 
-> **Windows tip:** extracting the zip can create a nested folder (`python-uv-project\python-uv-project`). Run `dir` (Windows) or `ls` (macOS/Linux). If you don't see `pyproject.toml`, `cd` into the inner folder.
+> **Windows tip:** extracting the zip can create a nested folder (`python-template\python-template`). Run `dir` (Windows) or `ls` (macOS/Linux). If you don't see `pyproject.toml`, `cd` into the inner folder.
 
 ---
 
@@ -80,7 +80,7 @@ There's nothing to activate. Every command below is run through `uv run`, which 
 
 ```bash
 uv run pytest
-uv run python -m my_project.main
+uv run python -m python_template.main
 ```
 
 If you'd rather activate the environment the traditional way (e.g. so your editor's interpreter picks it up), you still can:
@@ -104,7 +104,7 @@ Once activated, drop the `uv run` prefix (`pytest` instead of `uv run pytest`).
 ### Step 1. Confirm you're in the project root
 
 ```bash
-cd python-uv-project
+cd python-template
 ```
 
 Run `dir` (Windows) or `ls` (macOS/Linux) and make sure you can see `pyproject.toml`.
@@ -214,7 +214,7 @@ uv lock --upgrade             # upgrade everything to latest allowed versions
 | `uv: command not found`               | Re-run the install command above, then open a new terminal (it updates your PATH)                |
 | `error: No such file: pyproject.toml` | Wrong folder. Run `dir` / `ls` and `cd` to the folder containing `pyproject.toml`                |
 | `pytest: command not found`           | You're not using `uv run` and haven't activated `.venv`. Use `uv run pytest` instead             |
-| `ModuleNotFoundError: my_project`     | Run `uv run pytest` from the project root. `pyproject.toml` sets `pythonpath = ["src"]`          |
+| `ModuleNotFoundError: python_template`     | Run `uv run pytest` from the project root. `pyproject.toml` sets `pythonpath = ["src"]`          |
 | Scripts disabled in PowerShell        | Use `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` (see Step 3)                    |
 | Wrong Python version picked up        | Delete `.venv` and re-run `uv sync --extra dev` — uv reinstalls the version in `.python-version` |
 | Want a fresh start                    | Delete the `.venv` folder, then run `uv sync --extra dev` again                                  |

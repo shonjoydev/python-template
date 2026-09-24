@@ -10,19 +10,19 @@ Do this **once**, after setup works and before your real work begins. **Delete t
 
 Skip this section if the automated template workflow already did it for you (see the note above).
 
-- [ ] **Rename the package folder**: `src/my_project` → `src/<your_package_name>`
+- [ ] **Rename the package folder**: `src/python_template` → `src/<your_package_name>`
 
   ```bash
-  git mv src/my_project src/your_package_name
+  git mv src/python_template src/your_package_name
   ```
 
-- [ ] **Update `tests/test_smoke.py`**: change `import my_project` and `my_project.__version__` to your package name
-- [ ] **Update `src/your_package_name/main.py`**: change `from my_project import greet`
+- [ ] **Update `tests/test_smoke.py`**: change `import python_template` and `python_template.__version__` to your package name
+- [ ] **Update `src/your_package_name/main.py`**: change `from python_template import greet`
 - [ ] **Update `pyproject.toml`**:
-  - `name = "my-project"` → your project name
-  - `[tool.hatch.build.targets.wheel] packages = ["src/my_project"]` → your package path
-  - `[tool.pytest.ini_options] addopts` — the `--cov=src/my_project` entry
-  - `[tool.coverage.run] source = ["src/my_project"]`
+  - `name = "python-template"` → your project name
+  - `[tool.hatch.build.targets.wheel] packages = ["src/python_template"]` → your package path
+  - `[tool.pytest.ini_options] addopts` — the `--cov=src/python_template` entry
+  - `[tool.coverage.run] source = ["src/python_template"]`
 - [ ] Run `uv run pytest` and confirm it still passes before moving on
 
 ---
